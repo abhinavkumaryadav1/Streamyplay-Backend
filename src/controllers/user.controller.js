@@ -122,10 +122,16 @@ return res.status(201).json(
 
     const {email , username , password} = req.body
 
-    if(!email && !username) //mujhe dono se login karwana hai
-    {
-      throw new ApiError(400,"Username or password required")
+    console.log("LOGIN BODY:", req.body);
+  console.log("PASSWORD TYPE:", typeof password, password);
+
+    if ((!email && !username) || !password) {
+      throw new ApiError(
+        400,
+        "Username/email and password are required"
+      );
     }
+    
 
     const user= await User.findOne({
     $or: [{username} , {email}]
