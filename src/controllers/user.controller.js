@@ -122,8 +122,7 @@ return res.status(201).json(
 
     const {email , username , password} = req.body
 
-    console.log("LOGIN BODY:", req.body);
-  console.log("PASSWORD TYPE:", typeof password, password);
+    
 
     if ((!email && !username) || !password) {
       throw new ApiError(
@@ -133,8 +132,13 @@ return res.status(201).json(
     }
     
 
-    const user= await User.findOne({
-    $or: [{username} , {email}]
+    const query = [];
+
+if (username) query.push({ username: username.toLowerCase() });
+if (email) query.push({ email: email.toLowerCase() });
+
+const user = await User.findOne({ $or: query });
+
 })
 
 if(!user)
