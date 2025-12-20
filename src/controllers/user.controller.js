@@ -139,7 +139,7 @@ if (email) query.push({ email: email.toLowerCase() });
 
 const user = await User.findOne({ $or: query });
 
-})
+
 
 if(!user)
 {
