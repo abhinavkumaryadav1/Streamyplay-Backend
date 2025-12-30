@@ -3,22 +3,30 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 
 const app = express()
-const allowedOrigins = process.env.CORS_ORIGIN.split(",");
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",")
+  : [];
 
 app.use(
   cors({
-    origin: function (origin, callback) {
+    origin: (origin, callback) => {
+      // allow Postman, server-to-server, health checks
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS not allowed"));
+        return callback(null, true);
       }
+
+      console.log("CORS blocked origin:", origin);
+      return callback(null, false); // ❗ IMPORTANT
     },
     credentials: true,
   })
 );
+
+// allow preflight
+app.options("*", cors());
+
 
 
 app.use(express.json({limit:"16kb"}))
