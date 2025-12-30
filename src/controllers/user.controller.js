@@ -161,7 +161,9 @@ if(!isPasswordValid)
   const options = {
     httpOnly:true,
     secure:true,
-    sameSite: "none"
+    sameSite: "none",
+    maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days in milliseconds
+    path: "/"
   }
 
   return res.status(200) //thoda 
@@ -198,8 +200,9 @@ const logoutUser = asyncHandler(async(req,res)=>{
   const options = {
     httpOnly:true,
     secure:true,
-    sameSite: "none"
-
+    sameSite: "none",
+    maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days in milliseconds
+    path: "/"
   }
 
   return res
@@ -241,7 +244,9 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
       const options = {
        httpOnly:true,
        secure:true,
-       sameSite: "none"
+       sameSite: "none",
+       maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days in milliseconds
+       path: "/"
       }
  
       const {accessToken,newRefreshToken} = await generateAccessAndRefreshTokens(user._id);
