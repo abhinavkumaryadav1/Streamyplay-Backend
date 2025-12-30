@@ -161,6 +161,7 @@ if(!isPasswordValid)
   const options = {
     httpOnly:true,
     secure:true,
+    sameSite: "none"
   }
 
   return res.status(200) //thoda 
