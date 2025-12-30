@@ -25,7 +25,7 @@ app.use(
 );
 
 // allow preflight
-app.options("*", cors());
+app.options("/*", cors());
 
 
 
