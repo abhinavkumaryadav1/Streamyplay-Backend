@@ -249,12 +249,12 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
        path: "/"
       }
  
-      const {accessToken,newRefreshToken} = await generateAccessAndRefreshTokens(user._id);
+      const {accessToken,refreshToken} = await generateAccessAndRefreshTokens(user._id);
  
       res
       .status(200)
       .cookie("accessToken",accessToken,options)
-      .cookie("refreshToken",newRefreshToken,options)
+      .cookie("refreshToken",refreshToken,options)
       .json(
        new ApiResponse(
          200,
