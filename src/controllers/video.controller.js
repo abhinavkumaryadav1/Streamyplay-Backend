@@ -305,40 +305,35 @@ const updateVideo = asyncHandler(async (req, res) => {
             throw new ApiError(400,"Both Title and Description is required to Proceed")
         }
 
-        const thumbnailLocalPath = req.file?.path
-        if (!thumbnailLocalPath) 
-        {
-        throw new ApiError(400, "thumbnaillll is required");
+        const updateData = { title, description };
+
+        // Only update thumbnail if a new one is provided
+        const thumbnailLocalPath = req.file?.path;
+        if (thumbnailLocalPath) {
+            const thumbnailToBeDeleted = video.thumbnail.public_id;
+            const newThumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+            
+            if (!newThumbnail) {
+                throw new ApiError(400, "Thumbnail Failed to upload");
+            }
+            
+            updateData.thumbnail = {
+                public_id: newThumbnail.public_id,
+                url: newThumbnail.url
+            };
+            
+            // Delete old thumbnail after successful upload
+            await deleteOnCloudinary(thumbnailToBeDeleted);
         }
-
-        const thumbnailToBeDeleted = video.thumbnail.public_id
-        const newThumbnail = await uploadOnCloudinary(thumbnailLocalPath)
-        if (!newThumbnail) 
-        {
-        throw new ApiError(400, "Thumbnail Failed to update ");
-        }
-
-        const updatedVideo = await Video.findByIdAndUpdate(videoId,{
-
-            $set:{
-
-                    title,
-                    description,
-                    thumbnail:{
-                        public_id:newThumbnail.public_id,
-                        url:newThumbnail.url
-                    }
-
-                 }
-
-        },{new:true})
-
-                const deleteThumbnail =  await deleteOnCloudinary(thumbnailToBeDeleted)
-
-
-        if(!updatedVideo)
-        {
-            throw new ApiError(500,"Failed to Update  the Video")
+    
+        const updatedVideo = await Video.findByIdAndUpdate(
+            videoId,
+            { $set: updateData },
+            { new: true }
+        );
+    
+        if(!updatedVideo) {
+            throw new ApiError(500,"Failed to Update the Video")
         }
 
         return res.status(200).json(new ApiResponse(200,updatedVideo,"Video Updated Successfully"))
