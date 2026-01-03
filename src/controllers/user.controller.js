@@ -161,7 +161,7 @@ if(!isPasswordValid)
   const options = {
     httpOnly:true,
     secure:true,
-    sameSite: "none",
+    sameSite: "lax",
     maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days in milliseconds
     path: "/"
   }
@@ -200,7 +200,7 @@ const logoutUser = asyncHandler(async(req,res)=>{
   const options = {
     httpOnly:true,
     secure:true,
-    sameSite: "none",
+    sameSite: "lax",
     maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days in milliseconds
     path: "/"
   }
@@ -244,7 +244,7 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
       const options = {
        httpOnly:true,
        secure:true,
-       sameSite: "none",
+       sameSite: "lax",
        maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days in milliseconds
        path: "/"
       }
@@ -488,7 +488,7 @@ const getUserChanelprofile = asyncHandler(async(req,res)=>{
   {
     throw new ApiError(404, "channel does not exists")
   }
-      console.log("channel inforations extracted: ",channel);
+      
 
       return res
       .status(200)
