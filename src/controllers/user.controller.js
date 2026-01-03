@@ -173,7 +173,7 @@ if(!isPasswordValid)
 
     new ApiResponse(200,
       {
-        user:loggedInUser , accessToken , refreshToken
+        user:loggedInUser 
       },
       "User LoggedIn Successfully"
     )
@@ -258,7 +258,7 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
       .json(
        new ApiResponse(
          200,
-         {accessToken,refreshToken:refreshToken},
+         {},
          "Access token is refreshed successfully"
        
        )
