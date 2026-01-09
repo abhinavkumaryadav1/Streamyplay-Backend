@@ -5,6 +5,7 @@ import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose";
+import fs from "fs/promises";
 
 const generateAccessAndRefreshTokens = async(userId)=>{
 
@@ -84,6 +85,9 @@ if (!avatarLocalPath) {
    throw new ApiError(400, "Avatar file is required");
  }
 
+ if (avatarLocalPath) fs.unlinkSync(avatarLocalPath);
+ if (coverImageLocalPath) fs.unlinkSync(coverImageLocalPath);
+ 
  const user = await User.create({ // .create(shortcut) use kiya hai to .save use karne ki zaroorat nahi hai
    fullName,
    avatar: avatar.url,
