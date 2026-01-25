@@ -85,8 +85,7 @@ if (!avatarLocalPath) {
    throw new ApiError(400, "Avatar file is required");
  }
 
- if (avatarLocalPath) fs.unlinkSync(avatarLocalPath);
- if (coverImageLocalPath) fs.unlinkSync(coverImageLocalPath);
+ // Files are already deleted by uploadOnCloudinary function, no need to delete again
  
  const user = await User.create({ // .create(shortcut) use kiya hai to .save use karne ki zaroorat nahi hai
    fullName,

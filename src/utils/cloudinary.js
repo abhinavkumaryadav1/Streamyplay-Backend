@@ -22,11 +22,17 @@ import fs from 'fs'
             console.log("file successfully uploaded on cloudinary: " , response.url);
             console.log("cloudanary responce and its type:",typeof(response)," ",response);
             
-            fs.unlinkSync(localFilePath)
+            // Safely delete the local file if it exists
+            if (fs.existsSync(localFilePath)) {
+                fs.unlinkSync(localFilePath);
+            }
             return response; // for user to extract information
 
         } catch (error) {
-            fs.unlinkSync(localFilePath) //remove file from local server because it can hinder ther server(nahi upload hua dhang se to hata hi do na)
+            // Safely remove file from local server if it exists (even if upload failed)
+            if (fs.existsSync(localFilePath)) {
+                fs.unlinkSync(localFilePath);
+            }
             console.log("something went wrong while uploading file on cloudinary from cloudinary fucntion. error: ",error);
             return null;  
         }
